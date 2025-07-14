@@ -95,35 +95,35 @@ const allSubjects = [
     // --- CICLO INICIAL ---
     // MÓDULO DE PSICOLOGÍA
     { id: 'hist-psico', name: 'Historia de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'psico-desarrollo', name: 'Psicología del Desarrollo', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'psico-desarrollo', name: 'Psicología del Desarrollo', prerequisites_cursada: ['hist-psico'], prerequisites_examen: ['hist-psico'], semester: 2, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     { id: 'neurobio', name: 'Neurobiología de la Mente', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'procesos', name: 'Procesos Cognitivos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'procesos', name: 'Procesos Cognitivos', prerequisites_cursada: ['neurobio'], prerequisites_examen: ['neurobio'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     { id: 'fund', name: 'Fundamentos de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'teorias', name: 'Teorías Psicológicas', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'teorias', name: 'Teorías Psicológicas', prerequisites_cursada: ['fund'], prerequisites_examen: ['fund'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     // MÓDULO METODOLÓGICO
     { id: 'epi', name: 'Epistemología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
-    { id: 'metodos', name: 'Métodos y herr.orientadas a la extensión', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 2, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'metodos', name: 'Métodos y herr.orientadas a la extensión', prerequisites_cursada: ['epi'], prerequisites_examen: ['epi'], semester: 2, credits: 2, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
     { id: 'herramientas', name: 'Herramientas para el trabajo intelectual', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
-    { id: 'met-gen', name: 'Metodología General de la Investigación', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'met-gen', name: 'Metodología General de la Investigación', prerequisites_cursada: ['herramientas'], prerequisites_examen: ['herramientas'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
     // MÓDULO PRÁCTICAS Y PROYECTOS
-    { id: 'entrevista', name: 'Entrevista Psicológica', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Prácticas y Proyectos' },
+    { id: 'entrevista', name: 'Entrevista Psicológica', prerequisites_cursada: ['psico-desarrollo'], prerequisites_examen: ['psico-desarrollo'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Prácticas y Proyectos' },
     // MÓDULO ARTICULACIÓN DE SABERES
     { id: 'arti-1', name: 'Articulación de saberes 1: Construcción del sujeto y del objeto en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
-    { id: 'arti-2', name: 'Articulación de Saberes 2: Psicología, Género y Derechos Humanos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
+    { id: 'arti-2', name: 'Articulación de Saberes 2: Psicología, Género y Derechos Humanos', prerequisites_cursada: ['arti-1'], prerequisites_examen: ['arti-1'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
     // MÓDULO REFERENCIAL
     { id: 'inicio', name: 'Inicio a la formación en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
-    { id: 'formacion', name: 'Formación Integral', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
+    { id: 'formacion', name: 'Formación Integral', prerequisites_cursada: ['inicio'], prerequisites_examen: ['inicio'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
 
     // --- CICLO DE FORMACIÓN INTEGRAL ---
     // 3° SEMESTRE
     // MÓDULO DE PSICOLOGÍA
-    { id: 'psico-social', name: 'Psicología Social', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
-    { id: 'psico-aprendizaje', name: 'Psicología, Sujeto y Aprendizaje', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
+    { id: 'psico-social', name: 'Psicología Social', prerequisites_cursada: ['psico-desarrollo'], prerequisites_examen: ['psico-desarrollo'], semester: 3, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
+    { id: 'psico-aprendizaje', name: 'Psicología, Sujeto y Aprendizaje', prerequisites_cursada: ['psico-social'], prerequisites_examen: ['psico-social'], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
     // MÓDULO METODOLÓGICO
-    { id: 'etica', name: 'Ética y deontología', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
-    { id: 'cuali', name: 'Métodos y Técnicas Cualitativas', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
+    { id: 'etica', name: 'Ética y deontología', prerequisites_cursada: ['teorias'], prerequisites_examen: ['teorias'], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
+    { id: 'cuali', name: 'Métodos y Técnicas Cualitativas', prerequisites_cursada: ['met-gen'], prerequisites_examen: ['met-gen'], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
     // MÓDULO DE ARTICULACIÓN DE SABERES
-    { id: 'arti-3', name: 'Articulación de Saberes 3: Clínica y Subjetividad', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes' },
+    { id: 'arti-3', name: 'Articulación de Saberes 3: Clínica y Subjetividad', prerequisites_cursada: ['arti-2'], prerequisites_examen: ['arti-2'], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes' },
     // 4° SEMESTRE
     // MÓDULO DE PSICOLOGÍA
     {
@@ -164,8 +164,8 @@ const allSubjects = [
     {
       id: 'cuanti',
       name: 'Métodos y Técnicas Cuantitativas',
-      prerequisites_cursada: [],
-      prerequisites_examen: [],
+      prerequisites_cursada: ['cuali'],
+      prerequisites_examen: ['cuali'],
       semester: 4,
       credits: 5,
       cycle: 'Ciclo de Formación Integral',
@@ -216,33 +216,91 @@ const allSubjects = [
 
     // --- 5º SEMESTRE ---
     // MÓDULO DE PSICOLOGÍA
-    { id: 'psicopatologia-infancia-adolescencia', name: 'Psicopatología de la infancia y de la adolescencia', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
-    { id: 'psicopatologia-adultos', name: 'Psicopatología de Adultos', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
-    { id: 'neuropsicologia', name: 'Neuropsicología', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'psicopatologia-infancia-adolescencia', name: 'Psicopatología de la infancia y de la adolescencia', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: ['psico-aprendizaje'], prerequisites_examen: ['psico-aprendizaje'] },
+    { id: 'psicopatologia-adultos', name: 'Psicopatología de Adultos', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: ['psico-aprendizaje'], prerequisites_examen: ['psico-aprendizaje'] },
+    { id: 'neuropsicologia', name: 'Neuropsicología', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: ['psico-aprendizaje'], prerequisites_examen: ['psico-aprendizaje'] },
     // MÓDULO METODOLÓGICO
-    { id: 'clinica-2', name: 'Clínica 2: Teorías y técnicas de las intervenciones', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'clinica-2', name: 'Clínica 2: Teorías y técnicas de las intervenciones', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico', prerequisites_cursada: ['clinica-1'], prerequisites_examen: ['clinica-1'] },
     // MÓDULO PRÁCTICAS Y PROYECTOS
-    { id: 'proyectos', name: 'Proyectos', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
-    { id: 'practicas-integral', name: 'Prácticas Integral', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'proyectos', name: 'Proyectos', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: ['diseno'], prerequisites_examen: ['diseno'] },
+    { id: 'practicas-integral', name: 'Prácticas Integral', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: ['proyectos'], prerequisites_examen: ['proyectos'] },
     // MÓDULO ARTICULACIÓN DE SABERES
-    { id: 'art-saberes-5-colectivo', name: 'Articulación de saberes 5: La psicología social y el problema de lo colectivo', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'art-saberes-5-colectivo', name: 'Articulación de saberes 5: La psicología social y el problema de lo colectivo', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes', prerequisites_cursada: ['arti-4'], prerequisites_examen: ['arti-4'] },
     // MÓDULO REFERENCIAL
-    { id: 'construccion-itinerario', name: 'Construcción de Itinerario', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Referencial', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'construccion-itinerario', name: 'Construcción de Itinerario', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Referencial', prerequisites_cursada: ['formacion'], prerequisites_examen: ['formacion'] },
 
     // --- 6º SEMESTRE ---
     // MÓDULO DE PSICOLOGÍA
-    { id: 'problematicas-contemporaneas-social', name: 'Problemáticas contemporáneas de la Psicología Social', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
-    { id: 'psicologia-educacion-6', name: 'Psicología y Educación', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    { 
+      id: 'problematicas-contemporaneas-social', 
+      name: 'Problemáticas contemporáneas de la Psicología Social', 
+      semester: 6, credits: 5, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo de Psicología', 
+      prerequisites_cursada: ['psico-social'], 
+      prerequisites_examen: ['psico-social'] 
+    },
+    { 
+      id: 'psicologia-educacion-6', 
+      name: 'Psicología y Educación', 
+      semester: 6, credits: 5, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo de Psicología', 
+      prerequisites_cursada: ['psico-desarrollo'], 
+      prerequisites_examen: ['psico-desarrollo'] 
+    },
     // MÓDULO METODOLÓGICO
-    { id: 'dispositivos-psicoterapeuticos-6', name: 'Dispositivos Psicoterapéuticos', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico', prerequisites_cursada: [], prerequisites_examen: [] },
+    { 
+      id: 'dispositivos-psicoterapeuticos-6', 
+      name: 'Dispositivos Psicoterapéuticos', 
+      semester: 6, credits: 5, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo Metodológico', 
+      prerequisites_cursada: ['clinica-1'], 
+      prerequisites_examen: ['clinica-1'] 
+    },
     // MÓDULO ARTICULACIÓN DE SABERES
-    { id: 'art-saberes-6', name: 'Articulación de saberes 6', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes', prerequisites_cursada: [], prerequisites_examen: [] },
+    { 
+      id: 'art-saberes-6', 
+      name: 'Articulación de saberes 6', 
+      semester: 6, credits: 5, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo Articulación de Saberes', 
+      prerequisites_cursada: ['arti-4'], 
+      prerequisites_examen: ['arti-4'] 
+    },
     // MÓDULO PRÁCTICAS Y PROYECTOS
-    { id: 'proyectos-6', name: 'Proyectos', semester: 6, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
-    { id: 'practicas-integral-6', name: 'Prácticas Integral', semester: 6, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    { 
+      id: 'proyectos-6', 
+      name: 'Proyectos', 
+      semester: 6, credits: 10, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo Prácticas y Proyectos', 
+      prerequisites_cursada: ['proyectos'], 
+      prerequisites_examen: ['proyectos'] 
+    },
+    { 
+      id: 'practicas-integral-6', 
+      name: 'Prácticas Integral', 
+      semester: 6, credits: 10, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo Prácticas y Proyectos', 
+      prerequisites_cursada: ['practicas-integral'], 
+      prerequisites_examen: ['practicas-integral'] 
+    },
     // MÓDULO REFERENCIAL
-    { id: 'construccion-itinerario-6', name: 'Construcción de Itinerario', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Referencial', prerequisites_cursada: [], prerequisites_examen: [] }
+    { 
+      id: 'construccion-itinerario-6', 
+      name: 'Construcción de Itinerario', 
+      semester: 6, credits: 5, 
+      cycle: 'Ciclo de Formación Integral', 
+      module: 'Módulo Referencial', 
+      prerequisites_cursada: ['construccion-itinerario'], 
+      prerequisites_examen: ['construccion-itinerario'] 
+    }
 ];
+
+// ...el resto del script JavaScript (renderTable, lógica, etc.) permanece igual...
 
 let subjectStatus = JSON.parse(localStorage.getItem('subjectStatus_gris') || '{}');
 let openDropdownId = null;
