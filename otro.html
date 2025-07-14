@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Malla Curricular Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f5f6fa;}
+        th, td { text-align: center; }
+        .subject-cell {
+            cursor: pointer;
+            transition: box-shadow 0.1s, background 0.1s, color 0.1s;
+            position: relative;
+            background: #f3f4f6;
+            border: 1px solid #d3d4da;
+            color: #aaa;
+            border-radius: 0.5em;
+            margin-bottom: 0.5em;
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+        .subject-cell.unlocked {
+            color: #353a45;
+            background: #f8fafc;
+            opacity: 1;
+            text-decoration: none;
+        }
+        .subject-cell.aprobada {
+            background: #e8fbe7;
+            color: #266e3d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .subject-cell.exonerada {
+            background: #eaeaea;
+            color: #6b7280;
+            text-decoration: none;
+            border: 1.5px solid #c9c9c9;
+            font-style: italic;
+            font-weight: 500;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 110%;
+            transform: translateX(-50%);
+            z-index: 30;
+            min-width: 120px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5em;
+            box-shadow: 0 4px 16px 0 rgba(0,0,0,0.08);
+        }
+        .dropdown.open { display: block; }
+        .dropdown-option {
+            padding: 0.5em 1em;
+            cursor: pointer;
+            color: #333;
+            font-weight: 500;
+        }
+        .dropdown-option.selected, .dropdown-option:hover {
+            background: #e5e7eb;
+            color: #1d4ed8;
+        }
+        .header-mod {
+            font-weight: bold;
+            background: #f1f3f6 !important;
+            color: #444;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .mod-credits {
+            font-size: 1em;
+            color: #5b6b7c;
+            font-weight: 500;
+            margin-left: 0.7em;
+        }
+    </style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto mt-8">
+    <div class="bg-white shadow-xl rounded-xl p-4 sm:p-8 mb-10">
+        <h1 class="text-3xl font-bold text-center mb-2" style="color:#4b5563;">Malla Curricular Interactiva</h1>
+        <p class="text-center text-gray-500 text-lg mb-4">
+            Toda la malla inicia en gris y tachada.<br>
+            Solo puedes activar materias al aprobar o exonerar las previas.<br>
+            <b>Sólo se suman los créditos exonerados</b> en el encabezado de cada módulo.<br>
+            Las materias del 3º semestre y posteriores se desbloquean solo si sumás los créditos exonerados necesarios en cada módulo.
+        </p>
+        <div id="subjectTable"></div>
+    </div>
+</div>
+<script>
+const allSubjects = [
+    // --- CICLO INICIAL ---
+    // MÓDULO DE PSICOLOGÍA
+    { id: 'hist-psico', name: 'Historia de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'psico-desarrollo', name: 'Psicología del Desarrollo', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'neurobio', name: 'Neurobiología de la Mente', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'procesos', name: 'Procesos Cognitivos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'fund', name: 'Fundamentos de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'teorias', name: 'Teorías Psicológicas', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    // MÓDULO METODOLÓGICO
+    { id: 'epi', name: 'Epistemología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'metodos', name: 'Métodos y herr.orientadas a la extensión', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 2, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'herramientas', name: 'Herramientas para el trabajo intelectual', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'met-gen', name: 'Metodología General de la Investigación', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    // MÓDULO PRÁCTICAS Y PROYECTOS
+    { id: 'entrevista', name: 'Entrevista Psicológica', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Prácticas y Proyectos' },
+    // MÓDULO ARTICULACIÓN DE SABERES
+    { id: 'arti-1', name: 'Articulación de saberes 1: Construcción del sujeto y del objeto en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
+    { id: 'arti-2', name: 'Articulación de Saberes 2: Psicología, Género y Derechos Humanos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
+    // MÓDULO REFERENCIAL
+    { id: 'inicio', name: 'Inicio a la formación en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
+    { id: 'formacion', name: 'Formación Integral', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
+
+    // --- CICLO DE FORMACIÓN INTEGRAL ---
+    // 3° SEMESTRE
+    // MÓDULO DE PSICOLOGÍA
+    { id: 'psico-social', name: 'Psicología Social', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
+    { id: 'psico-aprendizaje', name: 'Psicología, Sujeto y Aprendizaje', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología' },
+    // MÓDULO METODOLÓGICO
+    { id: 'etica', name: 'Ética y deontología', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
+    { id: 'cuali', name: 'Métodos y Técnicas Cualitativas', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico' },
+    // MÓDULO DE ARTICULACIÓN DE SABERES
+    { id: 'arti-3', name: 'Articulación de Saberes 3: Clínica y Subjetividad', prerequisites_cursada: [], prerequisites_examen: [], semester: 3, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes' },
+    // 4° SEMESTRE
+    // MÓDULO DE PSICOLOGÍA
+    {
+      id: 'clinica-1',
+      name: 'Clínica 1: Fundamentos Psicoanalíticos',
+      prerequisites_cursada: ['arti-3', 'teorias', 'etica'],
+      prerequisites_examen: ['arti-3', 'teorias', 'fund', 'etica', 'epi'],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo de Psicología'
+    },
+    {
+      id: 'psico-salud',
+      name: 'Psicología y Salud',
+      prerequisites_cursada: ['psico-desarrollo', 'fund', 'arti-2'],
+      prerequisites_examen: ['psico-desarrollo', 'fund', 'arti-2'],
+      semester: 4,
+      credits: 10,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo de Psicología'
+    },
+    // MÓDULO METODOLÓGICO
+    {
+      id: 'herr-clinica',
+      name: 'Herramientas de la Psicología Clínica',
+      prerequisites_cursada: [
+        'entrevista', 'inicio', 'arti-3', 'teorias', 'fund'
+      ],
+      prerequisites_examen: [
+        'entrevista', 'inicio', 'arti-3', 'teorias', 'fund'
+      ],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo Metodológico'
+    },
+    {
+      id: 'cuanti',
+      name: 'Métodos y Técnicas Cuantitativas',
+      prerequisites_cursada: [],
+      prerequisites_examen: [],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo Metodológico'
+    },
+    {
+      id: 'herr-social',
+      name: 'Herramientas de la Psicología Social',
+      prerequisites_cursada: [
+        'psico-social', 'teorias', 'fund', 'arti-1'
+      ],
+      prerequisites_examen: [
+        'psico-social', 'teorias', 'fund', 'arti-1'
+      ],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo Metodológico'
+    },
+    // MÓDULO PRÁCTICAS Y PROYECTOS
+    {
+      id: 'diseno',
+      name: 'Diseño de Proyectos',
+      prerequisites_cursada: [
+        'met-gen', 'epi', ['cuanti', 'cuali'], 'herramientas'
+      ],
+      prerequisites_examen: [],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo Prácticas y Proyectos'
+    },
+    // MÓDULO DE ARTICULACIÓN DE SABERES
+    {
+      id: 'arti-4',
+      name: 'Articulación de Saberes 4: Estado, Sociedad y Políticas Públicas',
+      prerequisites_cursada: [
+        'psico-social', 'arti-1', 'teorias', 'fund', 'arti-2'
+      ],
+      prerequisites_examen: [
+        'psico-social', 'arti-1', 'teorias', 'fund', 'arti-2'
+      ],
+      semester: 4,
+      credits: 5,
+      cycle: 'Ciclo de Formación Integral',
+      module: 'Módulo Articulación de Saberes'
+    },
+
+    // --- 5º SEMESTRE ---
+    // MÓDULO DE PSICOLOGÍA
+    { id: 'psicopatologia-infancia-adolescencia', name: 'Psicopatología de la infancia y de la adolescencia', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'psicopatologia-adultos', name: 'Psicopatología de Adultos', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'neuropsicologia', name: 'Neuropsicología', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO METODOLÓGICO
+    { id: 'clinica-2', name: 'Clínica 2: Teorías y técnicas de las intervenciones', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO PRÁCTICAS Y PROYECTOS
+    { id: 'proyectos', name: 'Proyectos', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'practicas-integral', name: 'Prácticas Integral', semester: 5, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO ARTICULACIÓN DE SABERES
+    { id: 'art-saberes-5-colectivo', name: 'Articulación de saberes 5: La psicología social y el problema de lo colectivo', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO REFERENCIAL
+    { id: 'construccion-itinerario', name: 'Construcción de Itinerario', semester: 5, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Referencial', prerequisites_cursada: [], prerequisites_examen: [] },
+
+    // --- 6º SEMESTRE ---
+    // MÓDULO DE PSICOLOGÍA
+    { id: 'problematicas-contemporaneas-social', name: 'Problemáticas contemporáneas de la Psicología Social', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'psicologia-educacion-6', name: 'Psicología y Educación', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo de Psicología', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO METODOLÓGICO
+    { id: 'dispositivos-psicoterapeuticos-6', name: 'Dispositivos Psicoterapéuticos', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Metodológico', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO ARTICULACIÓN DE SABERES
+    { id: 'art-saberes-6', name: 'Articulación de saberes 6', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Articulación de Saberes', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO PRÁCTICAS Y PROYECTOS
+    { id: 'proyectos-6', name: 'Proyectos', semester: 6, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    { id: 'practicas-integral-6', name: 'Prácticas Integral', semester: 6, credits: 10, cycle: 'Ciclo de Formación Integral', module: 'Módulo Prácticas y Proyectos', prerequisites_cursada: [], prerequisites_examen: [] },
+    // MÓDULO REFERENCIAL
+    { id: 'construccion-itinerario-6', name: 'Construcción de Itinerario', semester: 6, credits: 5, cycle: 'Ciclo de Formación Integral', module: 'Módulo Referencial', prerequisites_cursada: [], prerequisites_examen: [] }
+];
+
+let subjectStatus = JSON.parse(localStorage.getItem('subjectStatus_gris') || '{}');
+let openDropdownId = null;
+
+// Devuelve la suma de créditos EXONERADOS por módulo
+function getExoneratedCredits(module) {
+    let sum = 0;
+    allSubjects.forEach(subj => {
+        if (subj.module === module && subjectStatus[subj.id] === "exonerada") sum += subj.credits;
+    });
+    return sum;
+}
+
+// Devuelve el desglose de créditos exonerados por cada módulo del ciclo inicial
+function getCicloInicialExonerado() {
+    const res = {
+        total: 0,
+        psicologia: 0,
+        metodologico: 0,
+        articulacion: 0,
+        referencial: 0,
+        otros: 0
+    };
+    allSubjects.forEach(subj => {
+        if (subj.cycle === "Ciclo Inicial" && subjectStatus[subj.id] === "exonerada") {
+            res.total += subj.credits;
+            if (subj.module === "Módulo de Psicología") res.psicologia += subj.credits;
+            else if (subj.module === "Módulo Metodológico") res.metodologico += subj.credits;
+            else if (subj.module === "Módulo Articulación de Saberes") res.articulacion += subj.credits;
+            else if (subj.module === "Módulo Referencial") res.referencial += subj.credits;
+            else res.otros += subj.credits;
+        }
+    });
+    return res;
+}
+
+// Lógica para desbloquear materias del 3er semestre y posteriores: 45 créditos exonerados (20/10/5/5 + 5)
+function cicloIntegralExoneradoHabilitado() {
+    const c = getCicloInicialExonerado();
+    return (
+        c.total >= 45 &&
+        c.psicologia >= 20 &&
+        c.metodologico >= 10 &&
+        c.articulacion >= 5 &&
+        c.referencial >= 5
+    );
+}
+
+// Lógica para saber si una materia está desbloqueada según previas o ciclo integral
+function isUnlocked(subject) {
+    if (subject.semester >= 3) {
+        // Solo se desbloquean si el ciclo integral exonerado está habilitado
+        if (!cicloIntegralExoneradoHabilitado()) return false;
+    }
+    // Si tiene previas, debe cumplirlas
+    if (!subject.prerequisites_cursada || subject.prerequisites_cursada.length === 0) return true;
+    return subject.prerequisites_cursada.every(prereq => {
+        if (Array.isArray(prereq)) {
+            return prereq.some(id => ["aprobada", "exonerada"].includes(subjectStatus[id]));
+        } else {
+            return ["aprobada", "exonerada"].includes(subjectStatus[prereq]);
+        }
+    });
+}
+
+window.setSubjectState = function(subjId, state) {
+    subjectStatus[subjId] = state;
+    localStorage.setItem('subjectStatus_gris', JSON.stringify(subjectStatus));
+    window.closeDropdowns();
+    window.renderTable();
+};
+window.closeDropdowns = function() {
+    document.querySelectorAll('.dropdown').forEach(el => el.classList.remove('open'));
+    openDropdownId = null;
+};
+window.handleDropdownClick = function(subjId) {
+    if (openDropdownId === subjId) { window.closeDropdowns(); return; }
+    window.closeDropdowns();
+    const dropdown = document.getElementById('dropdown-' + subjId);
+    if (dropdown) { dropdown.classList.add('open'); openDropdownId = subjId; }
+};
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.subject-cell')) window.closeDropdowns();
+});
+
+window.renderTable = function() {
+    const orderedModules = [
+        "Módulo de Psicología",
+        "Módulo Metodológico",
+        "Módulo Prácticas y Proyectos",
+        "Módulo Articulación de Saberes",
+        "Módulo Referencial"
+    ];
+    const columns = [
+        { ciclo: "Ciclo Inicial", semestre: 1, label: "1º" },
+        { ciclo: "Ciclo Inicial", semestre: 2, label: "2º" },
+        { ciclo: "Ciclo de Formación Integral", semestre: 3, label: "3º" },
+        { ciclo: "Ciclo de Formación Integral", semestre: 4, label: "4º" },
+        { ciclo: "Ciclo de Formación Integral", semestre: 5, label: "5º" },
+        { ciclo: "Ciclo de Formación Integral", semestre: 6, label: "6º" }
+    ];
+    let html = '<div class="overflow-x-auto"><table class="min-w-full border border-gray-200 shadow-sm mb-8 bg-gray-50">';
+    // Header
+    html += `<thead><tr><th class="border border-gray-200 px-3 py-2 header-mod" rowspan="2"></th>`;
+    let i = 0;
+    while (i < columns.length) {
+        const ciclo = columns[i].ciclo;
+        const count = columns.filter(col => col.ciclo === ciclo).length;
+        html += `<th class="border border-gray-200 px-4 py-2 header-mod text-base" colspan="${count}">${ciclo}</th>`;
+        i += count;
+    }
+    html += `</tr><tr>`;
+    columns.forEach(col => {
+        html += `<th class="border border-gray-200 px-4 py-2 header-mod">Semestre ${col.label}</th>`;
+    });
+    html += `</tr></thead><tbody>`;
+    // Cuerpo
+    orderedModules.forEach(module => {
+        if (!allSubjects.some(s => s.module === module)) return;
+        const exoCred = getExoneratedCredits(module);
+        html += `<tr><td class="border border-gray-200 px-2 py-2 header-mod">${module}<span class="mod-credits">${exoCred} créditos</span></td>`;
+        columns.forEach(col => {
+            const mats = allSubjects.filter(s => s.module === module && s.semester === col.semestre && s.cycle === col.ciclo);
+            if (mats.length > 0) {
+                html += `<td class="border border-gray-200 px-2 py-2 align-top">`;
+                mats.forEach(mat => {
+                    const state = subjectStatus[mat.id] || "sin-cursar";
+                    let cellClass = "subject-cell";
+                    if (["aprobada", "exonerada"].includes(state)) {
+                        cellClass += " unlocked";
+                        if (state === "aprobada") cellClass += " aprobada";
+                        if (state === "exonerada") cellClass += " exonerada";
+                    } else if (isUnlocked(mat)) {
+                        cellClass += " unlocked";
+                    }
+                    html += `<div class="${cellClass}" tabindex="0"
+                        onclick="handleDropdownClick('${mat.id}'); event.stopPropagation();"
+                        onkeydown="if(event.key==='Enter'){handleDropdownClick('${mat.id}'); event.stopPropagation();}">
+                        <div class="font-bold text-base">${mat.name}</div>
+                        <div id="dropdown-${mat.id}" class="dropdown">
+                            <div class="dropdown-option${state === 'sin-cursar' ? ' selected' : ''}" onclick="setSubjectState('${mat.id}', 'sin-cursar'); event.stopPropagation();">Sin cursar</div>
+                            <div class="dropdown-option${state === 'aprobada' ? ' selected' : ''}" onclick="setSubjectState('${mat.id}', 'aprobada'); event.stopPropagation();">Aprobada</div>
+                            <div class="dropdown-option${state === 'exonerada' ? ' selected' : ''}" onclick="setSubjectState('${mat.id}', 'exonerada'); event.stopPropagation();">Exonerada</div>
+                        </div>
+                    </div>`;
+                });
+                html += `</td>`;
+            } else {
+                html += `<td class="border border-gray-200 px-2 py-2 bg-gray-50"></td>`;
+            }
+        });
+        html += `</tr>`;
+    });
+    html += `</tbody></table></div>`;
+    document.getElementById('subjectTable').innerHTML = html;
+};
+window.onload = window.renderTable;
+</script>
+</body>
+</html>
