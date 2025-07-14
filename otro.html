@@ -95,24 +95,24 @@ const allSubjects = [
     // --- CICLO INICIAL ---
     // MÓDULO DE PSICOLOGÍA
     { id: 'hist-psico', name: 'Historia de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'psico-desarrollo', name: 'Psicología del Desarrollo', prerequisites_cursada: ['hist-psico'], prerequisites_examen: ['hist-psico'], semester: 2, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'psico-desarrollo', name: 'Psicología del Desarrollo', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 10, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     { id: 'neurobio', name: 'Neurobiología de la Mente', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'procesos', name: 'Procesos Cognitivos', prerequisites_cursada: ['neurobio'], prerequisites_examen: ['neurobio'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'procesos', name: 'Procesos Cognitivos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     { id: 'fund', name: 'Fundamentos de la Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
-    { id: 'teorias', name: 'Teorías Psicológicas', prerequisites_cursada: ['fund'], prerequisites_examen: ['fund'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
+    { id: 'teorias', name: 'Teorías Psicológicas', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo de Psicología' },
     // MÓDULO METODOLÓGICO
     { id: 'epi', name: 'Epistemología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
-    { id: 'metodos', name: 'Métodos y herr.orientadas a la extensión', prerequisites_cursada: ['epi'], prerequisites_examen: ['epi'], semester: 2, credits: 2, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'metodos', name: 'Métodos y herr.orientadas a la extensión', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 2, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
     { id: 'herramientas', name: 'Herramientas para el trabajo intelectual', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
-    { id: 'met-gen', name: 'Metodología General de la Investigación', prerequisites_cursada: ['herramientas'], prerequisites_examen: ['herramientas'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
+    { id: 'met-gen', name: 'Metodología General de la Investigación', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Metodológico' },
     // MÓDULO PRÁCTICAS Y PROYECTOS
-    { id: 'entrevista', name: 'Entrevista Psicológica', prerequisites_cursada: ['psico-desarrollo'], prerequisites_examen: ['psico-desarrollo'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Prácticas y Proyectos' },
+    { id: 'entrevista', name: 'Entrevista Psicológica', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Prácticas y Proyectos' },
     // MÓDULO ARTICULACIÓN DE SABERES
     { id: 'arti-1', name: 'Articulación de saberes 1: Construcción del sujeto y del objeto en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
-    { id: 'arti-2', name: 'Articulación de Saberes 2: Psicología, Género y Derechos Humanos', prerequisites_cursada: ['arti-1'], prerequisites_examen: ['arti-1'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
+    { id: 'arti-2', name: 'Articulación de Saberes 2: Psicología, Género y Derechos Humanos', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Articulación de Saberes' },
     // MÓDULO REFERENCIAL
     { id: 'inicio', name: 'Inicio a la formación en Psicología', prerequisites_cursada: [], prerequisites_examen: [], semester: 1, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
-    { id: 'formacion', name: 'Formación Integral', prerequisites_cursada: ['inicio'], prerequisites_examen: ['inicio'], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
+    { id: 'formacion', name: 'Formación Integral', prerequisites_cursada: [], prerequisites_examen: [], semester: 2, credits: 5, cycle: 'Ciclo Inicial', module: 'Módulo Referencial' },
 
     // --- CICLO DE FORMACIÓN INTEGRAL ---
     // 3° SEMESTRE
@@ -299,8 +299,6 @@ const allSubjects = [
       prerequisites_examen: ['construccion-itinerario'] 
     }
 ];
-
-// ...el resto del script JavaScript (renderTable, lógica, etc.) permanece igual...
 
 let subjectStatus = JSON.parse(localStorage.getItem('subjectStatus_gris') || '{}');
 let openDropdownId = null;
